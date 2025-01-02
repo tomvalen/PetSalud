@@ -6,12 +6,12 @@ with app.app_context():
     db.create_all()
 
     # Usuario de ejemplo
-    admin = User(email="tomas.valenzu@gmail.com")
-    db.session.add(admin)
-    
-    # Mascota de ejemplo
-    pet1 = Pet(name="Firulais", type="Perro", breed="Labrador", age=3, owner=admin)
-    pet2 = Pet(name="Michi", type="Gato", breed="Siames", age=2, owner=admin)
+    user = User(name="Juan Pérez", email="juan.perez@example.com")
+    db.session.add(user)
+
+    # Mascotas de ejemplo
+    pet1 = Pet(name="Firulais", type="Perro", breed="Labrador", age=3, owner=user)
+    pet2 = Pet(name="Michi", type="Gato", breed="Siames", age=2, owner=user)
     db.session.add_all([pet1, pet2])
 
     db.session.commit()

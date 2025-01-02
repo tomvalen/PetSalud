@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - PetSalud{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <h2 class="text-center">Chatbot de PetSalud</h2>
+    <div id="messages" style="height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;"></div>
+    <form id="chatForm">
+        <div class="input-group">
+            <input type="text" id="messageInput" class="form-control" placeholder="Escribe tu mensaje..." required>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+<script>
+    const chatForm = document.getElementById('chatForm');
+    const messagesDiv = document.getElementById('messages');
+
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('messageInput');
+        const userMessage = input.value;
+
+        // Mostrar mensaje del usuario
+        const userDiv = document.createElement('div');
+        userDiv.textContent = `Tú: ${userMessage}`;
+        messagesDiv.appendChild(userDiv);
+
+        // Limpiar el input
+        input.value = '';
+
+        // Enviar al servidor
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        const data = await response.json();
+
+        // Mostrar respuesta del bot
+        const botDiv = document.createElement('div');
+        botDiv.textContent = `Bot: ${data.reply}`;
+        messagesDiv.appendChild(botDiv);
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+</script>
+{% endblock %}
